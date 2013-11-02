@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     };
 
     // convenience
-    grunt.registerTask('default', ['lint', 'test']);
+    grunt.registerTask('default', ['lint', 'test', 'coverage']);
     grunt.registerTask('all', ['clean', 'lint', 'test', 'coverage']);
 
     // continuous integration
@@ -72,7 +72,7 @@ module.exports = function (grunt) {
     gruntConfig['qunit-cov'] = {
         test:
         {
-            minimum: 1.0,
+            minimum: 0.7,
             baseDir: 'src',
             srcDir: 'src/js',
             depDirs: ['src/lib', 'src/test'],

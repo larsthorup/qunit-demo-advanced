@@ -62,3 +62,29 @@ test('delayHide', function () {
     // then
     ok($('#name').is(':hidden'), 'then hidden');
 });
+
+can.each([
+
+    {desc: 'success', response: {list: ['rachel']}, expected: ['rachel']},
+    {desc: 'failure', response: 500, expected: []}
+
+], function (scenario) {
+
+    test('listUrl option, ' + scenario.desc, function () {
+        // given
+        this.sinon.useFakeTimers();
+        can.fixture('/getNames', function (original, respondWith) {
+            respondWith(scenario.response);
+        });
+
+        // when
+        var autoComplete = new AutoComplete('#name', {
+            listUrl: '/getNames'
+        });
+        this.sinon.clock.tick(can.fixture.delay);
+
+        // then
+        deepEqual(autoComplete.options.list, scenario.expected, 'resulting list');
+    });
+
+});

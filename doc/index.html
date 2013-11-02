@@ -305,12 +305,12 @@ equal(later.getTime() - then.getTime(), 42000);
 
                         <pre><code data-trim>
 can.fixture('/getNames', function (original, respondWith) {
-    respondWith({list: ['rachel', 'lakshmi']});
+    respondWith({list: ['rachel']});
 });
-autoComplete = new AutoComplete('#name', {
+var autoComplete = new AutoComplete('#name', {
     listUrl: '/getNames'
 });
-jasmine.Clock.tick(can.fixture.delay);
+sinon.clock.tick(can.fixture.delay);
                         </code></pre>
 
                         <pre><code data-trim>
@@ -546,10 +546,10 @@ if (window.performance) {
                 <section>
                     <h2>Resources</h2>
                     <ul>
-                        <li><a href="https://github.com/larsthorup/jasmine-demo-advanced">github.com/larsthorup/jasmine-demo-advanced</a></li>
+                        <li><a href="https://github.com/larsthorup/qunit-demo-advanced">github.com/larsthorup/qunit-demo-advanced</a></li>
                         <li><a href="https://twitter.com/larsthorup">@larsthorup</a></li>
-                        <li><a href="http://pivotal.github.io/jasmine/">pivotal.github.io/jasmine</a></li>
-                        <li><a href="https://github.com/velesin/jasmine-jquery/">github.com/velesin/jasmine-jquery</a></li>
+                        <li><a href="http://qunitjs.com/">qunitjs.com</a></li>
+                        <li><a href="http://sinonjs.com/">sinonjs.com</a></li>
                         <li><a href="http://canjs.com/">canjs.com</a></li>
                         <li><a href="https://github.com/hakimel/reveal.js">github.com/hakimel/reveal.js</a></li>
                     </ul>

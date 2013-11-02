@@ -201,17 +201,18 @@ this.input.focus();
                         </code></pre>
 
                         <pre><code data-trim>
-spyOn(window, 'AutoComplete').andCallFake(function () {
-    this.focus = jasmine.createSpy();
+this.sinon.stub(window, 'AutoComplete', function () {
+    this.focus = sinon.spy();
 });
 
-expect(window.AutoComplete.callCount).toBe(1);
-var args = window.AutoComplete.mostRecentCall.args;
-expect(args[0]).toBe('#name');
-expect(args[1]).toEqual({listUrl: '/someUrl'});
+ok(form, 'created');
+equal(window.AutoComplete.callCount, 1);
+var args = window.AutoComplete.firstCall.call.args;
+ok(args[0].is('#name'));
+deepEqual(args[1], {listUrl: '/someUrl'});
 
-var object = window.AutoComplete.mostRecentCall.object;
-expect(object.focus).toHaveBeenCalledWith();
+var autoComplete = window.AutoComplete.firstCall.call.thisValue;
+ok(autoComplete.focus.called);
                         </code></pre>
 
                     </section>

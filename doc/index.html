@@ -143,7 +143,7 @@ test('multiply', function () {
                         </ul>
 
                         <pre><code data-trim>
-this.sandbox.stub(this.autoComplete, 'getMatch').returns('monique');
+this.sinon.stub(this.autoComplete, 'getMatch').returns('monique');
 
 $('#name').trigger($.Event('keypress', {charCode: 109}););
 
@@ -170,18 +170,18 @@ openPopup: function (url) {
 
                         <pre><code data-trim>
 var popup;
-spyOn(window, 'open').andCallFake(function () {
+this.sinon.stub(window, 'open', function () {
     popup = {
-        focus: jasmine.createSpy()
+        focus: sinon.spy()
     };
     return popup;
 });
 
-autoComplete.openPopup('zealake.com');
+this.autoComplete.openPopup('zealake.com');
 
-expect(window.open).toHaveBeenCalledWith('zealake.com', '_blank', 'resizable');
+ok(window.open.calledWith('zealake.com', '_blank', 'resizable'));
 
-expect(popup.focus).toHaveBeenCalledWith();
+ok(popup.focus.called, 'focus changed');
                         </code></pre>
                     </section>
 

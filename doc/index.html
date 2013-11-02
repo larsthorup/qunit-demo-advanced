@@ -136,19 +136,20 @@ test('multiply', function () {
                         <h2>Mocking methods</h2>
 
                         <ul>
+                            <li>Using SinonJS</li>
                             <li>We can mock the getMatch() method</li>
                             <li>decide how the mock should behave</li>
                             <li>verify that the mocked method was called correctly</li>
                         </ul>
 
                         <pre><code data-trim>
-spyOn(autoComplete, 'getMatch').andReturn('monique');
+this.sandbox.stub(this.autoComplete, 'getMatch').returns('monique');
 
-$('#name').trigger($.Event('keypress', {charCode: 109}));
+$('#name').trigger($.Event('keypress', {charCode: 109}););
 
-expect(autoComplete.getMatch).toHaveBeenCalledWith('m');
+ok(this.autoComplete.getMatch.calledWith('m'));
 
-expect($('#name')).toHaveValue('monique');
+equal($('#name').val(), 'monique');
                         </code></pre>
 
                     </section>

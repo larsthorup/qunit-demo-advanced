@@ -45,3 +45,20 @@ test('openPopup', function () {
     ok(window.open.calledWith('zealake.com', '_blank', 'resizable'), 'window.open called');
     ok(popup.focus.called, 'focus changed');
 });
+
+test('delayHide', function () {
+    // given
+    this.sinon.useFakeTimers();
+
+    // when
+    this.autoComplete.delayHide();
+
+    // then
+    ok($('#name').is(':visible'), 'initially visible');
+
+    // when later
+    this.sinon.clock.tick(500);
+
+    // then
+    ok($('#name').is(':hidden'), 'then hidden');
+});

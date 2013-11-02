@@ -143,11 +143,11 @@ test('multiply', function () {
                         </ul>
 
                         <pre><code data-trim>
-this.sinon.stub(this.autoComplete, 'getMatch').returns('monique');
+sinon.stub(autoComplete, 'getMatch').returns('monique');
 
 $('#name').trigger($.Event('keypress', {charCode: 109}););
 
-ok(this.autoComplete.getMatch.calledWith('m'));
+ok(autoComplete.getMatch.calledWith('m'));
 
 equal($('#name').val(), 'monique');
                         </code></pre>
@@ -170,14 +170,14 @@ openPopup: function (url) {
 
                         <pre><code data-trim>
 var popup;
-this.sinon.stub(window, 'open', function () {
+sinon.stub(window, 'open', function () {
     popup = {
         focus: sinon.spy()
     };
     return popup;
 });
 
-this.autoComplete.openPopup('zealake.com');
+autoComplete.openPopup('zealake.com');
 
 ok(window.open.calledWith('zealake.com', '_blank', 'resizable'));
 
@@ -201,7 +201,7 @@ this.input.focus();
                         </code></pre>
 
                         <pre><code data-trim>
-this.sinon.stub(window, 'AutoComplete', function () {
+sinon.stub(window, 'AutoComplete', function () {
     this.focus = sinon.spy();
 });
 
@@ -246,22 +246,22 @@ delayHide: function () {
                         <h2>Mocking timers</h2>
 
                         <ul>
-                            <li>Use Jasmine's mock clock</li>
-                            <li>Control the clock explicitly</li>
+                            <li>Use Sinon's mock clock</li>
+                            <li>Tick the clock explicitly</li>
                             <li>Now the test completes in milliseconds</li>
                             <li>without waiting</li>
                         </ul>
 
                         <pre><code data-trim>
-jasmine.Clock.useMock();
+sinon.useFakeTimers();
 
 autoComplete.delayHide();
 
-expect($('#name')).toBeVisible();
+ok($('#name').is(':visible'));
 
-jasmine.Clock.tick(500);
+sinon.clock.tick(500);
 
-expect($('#name')).not.toBeVisible();
+ok($('#name').is(':hidden'));
                         </code></pre>
 
                     </section>

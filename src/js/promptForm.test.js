@@ -6,6 +6,7 @@ module('promptForm', {
     },
     teardown: function () {
         this.sinon.restore();
+        detectLeaks();
     }
 });
 

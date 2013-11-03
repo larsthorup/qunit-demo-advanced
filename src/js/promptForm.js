@@ -11,6 +11,8 @@
                 listUrl: this.options.listUrl
             });
             this.input.focus();
+            // Note: simulate a DOM element leak
+            // $('<div id="overlay"></div>').appendTo('body');
         }
     });
 

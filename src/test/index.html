@@ -9,6 +9,7 @@
         QUnit.config.autostart = false;
     </script>
     <script src="lib/sinon.js"></script>
+    <script src="detectLeaks.js"></script>
     <script src="../lib/jquery.js"></script>
     <script src="../lib/can.custom.js"></script>
     <script src="../js/util/calculator.js"></script>
@@ -20,10 +21,12 @@
     <script src="../js/promptForm.test.js"></script>
 </head>
 <body>
-    <div id="qunit"></div>
-    <div id="qunit-fixture"></div>
-    <script type="text/javascript">
-        QUnit.start();
-    </script>
+    <div id="qunit-reporter">
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+        <script type="text/javascript">
+            QUnit.start();
+        </script>
+    </div>
 </body>
 </html>

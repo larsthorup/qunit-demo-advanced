@@ -417,11 +417,11 @@ can.each([
                         </ul>
 
                         <pre><code data-trim>
-spec.after(function () {
-    var leaks = $('body').children(':not(#HTMLReporter)');
-    expect(leaks).not.toExist();
+teardown: function () {
+    var leaks = $('body').children(':not(#qunit-reporter)');
+    equal(leaks.length, 0, 'no DOM elements leaked');
     leaks.remove();
-});
+}
                         </code></pre>
                     </section>
 

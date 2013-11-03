@@ -325,18 +325,11 @@ respondWith(500); // Internal server error
                         <ul>
                             <li>Supply the markup required by the code</li>
                             <li>Automatically cleanup markup after every test</li>
-                            <li>Various solutions</li>
-                            <ul>
-                                <li>Built into QUnit as #qunit-fixture</li>
-                                <li>Use jasmine-jquery</li>
-                            </ul>
+                            <li>Built into QUnit as #qunit-fixture</li>
                         </ul>
 
                         <pre><code data-trim>
-var fixtures = jasmine.getFixtures();
-fixtures.set(fixtures.sandbox());
-
-$('<input id="name" />').appendTo('#sandbox');
+$('<input id="name" />').appendTo('#qunit-fixture');
 
 autoComplete = new AutoComplete('#name');
                         </code></pre>

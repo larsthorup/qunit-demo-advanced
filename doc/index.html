@@ -340,9 +340,8 @@ autoComplete = new AutoComplete('#name');
                         <h2>Spying on events</h2>
 
                         <ul>
-                            <li>How do we test that an event was triggered?</li>
-                            <li>Or prevented from bubbling?</li>
-                            <li>Use jasmine-jquery!</li>
+                            <li>How do we test that an event was cancelled?</li>
+                            <li>Spy on the preventDefault() method</li>
                         </ul>
 
                         <pre><code data-trim>
@@ -358,11 +357,12 @@ autoComplete = new AutoComplete('#name');
                         </code></pre>
 
                         <pre><code data-trim>
-keypressEvent = spyOnEvent('#name', 'keypress');
+var keypressEvent = $.Event('keypress', {charCode: 109});
+sinon.spy(keypressEvent, 'preventDefault');
 
-$('#name').trigger($.Event('keypress', {charCode: 109}));
+$('#name').trigger(keypressEvent);
 
-expect(keypressEvent).toHaveBeenPrevented();
+ok(keypressEvent.preventDefault.called);
                         </code></pre>
 
                     </section>
@@ -374,84 +374,7 @@ expect(keypressEvent).toHaveBeenPrevented();
                 </section>
 
                 <section>
-
-                    <section>
-                        <h2>Jasmine Matchers</h2>
-                    </section>
-
-                    <section>
-                        <h2>Expressive matchers</h2>
-
-                        <ul>
-                            <li>Make your tests more readable</li>
-                            <li>Use jasmine-jquery for jQuery-specific matchers</li>
-                            <li>Instead of:</li>
-
-                            <pre><code data-trim>
-expect($('#name').is(':visible')).toBeFalsy();
-                            </code></pre>
-
-                            <li>Prefer:</li>
-
-                            <pre><code data-trim>
-expect($('#name')).not.toBeVisible();
-                            </code></pre>
-
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2>Roll your own matchers</h2>
-
-                        <ul>
-                            <li>Make your tests even more readable</li>
-                            <li><a href="https://github.com/pivotal/jasmine/wiki/Matchers">github.com/pivotal/jasmine/wiki/Matchers</a></li>
-                            <li>Like this can.js specific matcher:</li>
-                            <pre><code data-trim>
-expect($('#name')).toHaveControlOfType(AutoComplete);
-                            </code></pre>
-                            <li>Defined like this:</li>
-                            <pre><code data-trim>
-jasmine.getEnv().currentSpec.addMatchers({
-    toHaveControlOfType: function (expected) {
-        var actual = this.actual.controls(expected);
-        return actual.length > 0;
-    }
-});
-                            </code></pre>
-                        </ul>
-                    </section>
-
-                </section>
-
-                <section>
-                    <h2>Structure of test code</h2>
-                    <ul>
-                        <li>Reuse common setup code</li>
-                        <li>By nesting Jasmine's <code>describe()</code> functions</li>
-                    </ul>
-                    <pre><code data-trim>
-describe('delayHide', function () {
-    beforeEach(function () {
-        autoComplete.delayHide();
-    });
-    it('should initially stay visible', function () {
-        expect($('#name')).toBeVisible();
-    });
-    describe('after a delay', function () {
-        beforeEach(function () {
-            jasmine.Clock.tick(500);
-        });
-        it('should be invisible', function () {
-            expect($('#name')).not.toBeVisible();
-        });
-    });
-});
-                    </code></pre>
-                </section>
-
-                <section>
-                    <h2>Browser-specific tests</h2>
+                    <h2>Paramerized and conditioned tests</h2>
                     <ul>
                         <li>Some code is browser specific</li>
                         <ul>
@@ -463,18 +386,14 @@ describe('delayHide', function () {
                     </ul>
                     <pre><code data-trim>
 can.each([
-    {
-        response: {list: ['rachel', 'lakshmi']},
-        expected: ['rachel', 'lakshmi']
-    },
-    {
-        response: 500,
-        expected: []
-    }
+    {desc: 'success', response: {list: ['x']}, expected: ['x']},
+    {desc: 'failure', response: 500, expected: []}
 ], function (scenario) {
-    describe('when ' + JSON.stringify(scenario.response), function () {
-        it('should ' + JSON.stringify(scenario.expected), function () {
+    test('listUrl option, ' + scenario.desc, function () {
+        can.fixture('/getNames', function (original, respondWith) {
+            respondWith(scenario.response);
         });
+        deepEqual(autoComplete.options.list, scenario.expected);
     });
 });
                     </code></pre>

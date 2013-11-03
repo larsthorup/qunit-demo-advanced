@@ -430,6 +430,7 @@ teardown: function () {
 
                         <ul>
                             <li>window.performance.memory: a Google Chrome extension</li>
+                            <li>run Chrome with --enable-memory-info --js-flags="--expose-gc"</li>
                             <li>Collect memory consumption data for every test</li>
                             <li>Sort and investigate the largest memory consumers</li>
                             <li>However, performance data is not reproducible</li>
@@ -438,15 +439,14 @@ teardown: function () {
                         </ul>
 
                     <pre><code data-trim>
-// run Chrome with --enable-memory-info --js-flags="--expose-gc"
-if (window.performance) {
-    if (window.gc) { window.gc(); }
-    spec.heapSizeBefore = window.performance.memory.usedJSHeapSize;
-    spec.after(function () {
-        if(window.gc) { window.gc(); }
-        spec.heapSizeAfter = window.performance.memory.usedJSHeapSize;
-        console.log(spec.heapSizeAfter - spec.heapSizeBefore, spec.getFullName());
-    });
+setup: function () {
+    window.gc();
+    this.heapSizeBefore = window.performance.memory.usedJSHeapSize;
+},
+teardown: function () {
+    window.gc();
+    this.heapSizeAfter = window.performance.memory.usedJSHeapSize;
+    console.log(spec.heapSizeAfter - spec.heapSizeBefore);
 }
                     </code></pre>
 

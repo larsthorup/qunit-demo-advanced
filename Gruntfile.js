@@ -41,7 +41,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     gruntConfig.qunit = {
         src: ['src/test/index.html'],
-        serve: { options: { urls: ['http://localhost:8082/test/index.html']}}
+        serve: { options: { urls: [ /* specified in test-on-random-port */ ]}}
     };
     grunt.loadNpmTasks('grunt-qunit-junit');
     gruntConfig.qunit_junit = {
@@ -60,11 +60,20 @@ module.exports = function (grunt) {
     gruntConfig.connect = {};
     gruntConfig.connect.test = {
         options: {
-            port: 8082,
+            port: 0, // Note: configure connect to choose a randomly available port
             base: 'src'
         }
     };
-    grunt.registerTask('test', ['qunit_junit', 'connect:test', 'qunit:serve']);
+    grunt.registerTask('test-on-random-port', function () {
+        grunt.event.once('connect.test.listening', function (host, actualPort) {
+            var url = 'http://localhost:' + actualPort + '/test/index.html';
+            gruntConfig.qunit.serve.options.urls = [url]; // Note: configure qunit to connect to the chosen port
+            grunt.task.run('qunit:serve');
+        });
+
+        grunt.task.run('connect:test');
+    });
+    grunt.registerTask('test', ['qunit_junit', 'test-on-random-port']);
 
 
     // coverage
